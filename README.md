@@ -11,6 +11,8 @@ A plugin for estimating time that could be spent for an article reading.
 Your pelicanconf.py should include following new options:
 - **ERT_WPM**: number of words that human usually read per one minute
 - **ERT_FORMAT**: format string, that contains `{time}` entry.
+- **ERT_INT** `True` or `False` whether or not the time displays as an integer
+    or a float
 
 ### Default configuration
 ```
@@ -18,7 +20,7 @@ ERT_WPM = 200
 ERT_FORMAT = '{time} read'
 ```
 
-## Accessing the estimated reading time imformation
+## Accessing the estimated reading time information
 For example, this is the code from my `article.html` template:
 ```
 {% if article.ert %} <strong>{{ article.ert }} </strong> {% endif %}
