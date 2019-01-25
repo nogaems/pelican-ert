@@ -7,11 +7,12 @@ log = logging.getLogger(__name__)
 
 ERT_WPM = 200  # words per minute by default
 ERT_FORMAT = '{time} read'
+ERT_INT = False
 
 
 def initialize(gen):
     global ERT_WPM, ERT_FORMAT
-    for option in ['ERT_WPM', 'ERT_FORMAT']:
+    for option in ['ERT_WPM', 'ERT_FORMAT', 'ERT_INT']:
         if not option in gen.settings.keys():
             log.warning(
                 'The necessary config option is missing: {},\
@@ -30,16 +31,27 @@ def estimate(text):
     if minutes < 1:
         time = '< 1 min'
     elif minutes < 60:
-        time = '{} min'.format(round(minutes))
+        rounded = round(minutes)
+        if ERT_INT :
+            rounded = int(rounded)
+        time = '{} min'.format(rounded)
     else:
         if time // 60 == 1:
             end = ''
         else:
             end = 's'
+
+        rounded_minutes = round(minutes // 60)
+        rounded_hours = round(minutes - rounded_minutes * 60)
+
+        if ERT_INT:
+            rounded_minutes = int(rounded_minutes)
+            rounded_hours = int(rounded_hours)
+
         time = '{} hour{} {} min'.format(
-            round(minutes // 60),
+            rounded_minutes,
             end,
-            round(minutes - (minutes // 60) * 60)
+            rounded_hours 
         )
     return ERT_FORMAT.format(time=time)
 
